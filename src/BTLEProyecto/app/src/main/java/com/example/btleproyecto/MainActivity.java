@@ -10,6 +10,7 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.ParcelUuid;
@@ -30,6 +31,7 @@ import java.util.UUID;
 public class MainActivity extends AppCompatActivity {
 
 
+
     private static final String ETIQUETA_LOG = ">>>>";
 
     private static final int CODIGO_PETICION_PERMISOS = 11223344;
@@ -38,6 +40,55 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothLeScanner elEscanner;
 
     private ScanCallback callbackDelEscaneo = null;
+
+
+
+    private Intent elIntentDelServicio = null;
+
+    /**
+     * Metodo que sirve para que al pulsar el boton arranque el servicio
+     * @param v que es la vista
+     */
+    public void botonArrancarServicioPulsado( View v ) {
+        Log.d(ETIQUETA_LOG, " boton arrancar servicio Pulsado" );
+
+        if ( this.elIntentDelServicio != null ) {
+            // ya estaba arrancado
+            return;
+        }
+
+        Log.d(ETIQUETA_LOG, " MainActivity.constructor : voy a arrancar el servicio");
+
+        this.elIntentDelServicio = new Intent(this, ServicioEscucharBeacons.class);
+
+        this.elIntentDelServicio.putExtra("tiempoDeEspera", (long) 5000);
+        startService( this.elIntentDelServicio );
+
+    } // ()
+
+    /**
+     * Metodo que sirve para que al pulsar el boton se detenga el servicio
+     * @param v vista usada
+     */
+    public void botonDetenerServicioPulsado( View v ) {
+
+        if ( this.elIntentDelServicio == null ) {
+            // no estaba arrancado
+            return;
+        }
+
+        stopService( this.elIntentDelServicio );
+
+        this.elIntentDelServicio = null;
+
+        Log.d(ETIQUETA_LOG, " boton detener servicio Pulsado" );
+
+
+    } // ()
+
+// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 
     /**
      * Metodo que busca todos los dispositivos bluetooth

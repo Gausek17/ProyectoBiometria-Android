@@ -1,4 +1,4 @@
-package com.example.escucharibeacons;
+package com.example.btleproyecto;
 
 import android.app.IntentService;
 import android.content.Intent;
