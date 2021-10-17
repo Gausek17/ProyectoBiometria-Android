@@ -13,16 +13,20 @@ import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.btleproyecto.Datos.PeticionarioREST;
+
 import java.util.List;
-import java.util.UUID;
+
 
 /**
  *
@@ -30,7 +34,8 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    private TextView elTexto;
+    private Button elBotonEnviar;
 
     private static final String ETIQUETA_LOG = ">>>>";
 
@@ -317,18 +322,7 @@ public class MainActivity extends AppCompatActivity {
      * Metodo que sirve para inicializar la vista del layout y el bluetooth
      * @param savedInstanceState datos que se han guardado de una instancia previa
      */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        Log.d(ETIQUETA_LOG, " onCreate(): empieza ");
-
-        inicializarBlueTooth();
-
-        Log.d(ETIQUETA_LOG, " onCreate(): termina ");
-
-    } // onCreate()
 
     /**
      * Metodo para añadir permisos a la aplicación
@@ -359,6 +353,62 @@ public class MainActivity extends AppCompatActivity {
         // Other 'case' lines to check for other
         // permissions this app might request.
     } // ()
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        inicializarBlueTooth();
+        this.elTexto = (TextView) findViewById(R.id.elTexto);
+        this.elBotonEnviar = (Button) findViewById(R.id.botonEnviar);
+
+
+        Log.d("clienterestandroid", "fin onCreate()");
+    }
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    public void boton_enviar_pulsado (View quien) {
+        Log.d("clienterestandroid", "boton_enviar_pulsado");
+        this.elTexto.setText("pulsado");
+
+        // ojo: creo que hay que crear uno nuevo cada vez
+        PeticionarioREST elPeticionario = new PeticionarioREST();
+
+		/*
+
+		   enviarPeticion( "hola", function (res) {
+		   		res
+		   })
+
+        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
+			(int codigo, String cuerpo) => { } );
+
+		   */
+
+        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
+                new PeticionarioREST.RespuestaREST () {
+                    @Override
+                    public void callback(int codigo, String cuerpo) {
+                        elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
+                    }
+                }
+        );
+
+
+    } // pulsado ()
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+
 
 } // class
 // --------------------------------------------------------------
