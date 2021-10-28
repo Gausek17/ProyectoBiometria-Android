@@ -28,7 +28,7 @@ public class LogicaFake {
                 "\"longitud\":" + medicion.getLongitud() + "," +
                 "\"latitud\":" + medicion.getLatitud() +
                 "}]";
-        elPeticionario.hacerPeticionREST("POST", "http://0.0.0.0:8000/anyadirMedicion", textoJSON,
+        elPeticionario.hacerPeticionREST("POST", "http://192.168.85.219:8000/anyadirMedicion", textoJSON,
                 new PeticionarioREST.RespuestaREST() {
                     @Override
                     public void callback(int codigo, String cuerpo) {
