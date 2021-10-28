@@ -3,9 +3,12 @@ package com.example.btleproyecto;
 
 import java.util.Arrays;
 
-// -----------------------------------------------------------------------------------
-// @author: Jordi Bataller i Mascarell
-// -----------------------------------------------------------------------------------
+/**
+ * TramaIBeacon
+ * Fichero donde encontramos las propiedades de la trama del beacon
+ * Alberto Valls Martinez
+ * 27/10/21
+ */
 public class TramaIBeacon {
     private byte[] prefijo = null; // 9 bytes
     private byte[] uuid = null; // 16 bytes
@@ -86,6 +89,7 @@ public class TramaIBeacon {
     }
 
     /**
+     * getCompanyID()->Z
      * Metodo para devolver el ID de la compañia
      * @return nos devuelve el id de la compañia
      */
@@ -94,6 +98,7 @@ public class TramaIBeacon {
     }
 
     /**
+     * getiBeaconType()->Z
      * Metodo para devolver el tipo de Beacon
      * @return nos devuelve el tipo de Beacon
      */
@@ -102,6 +107,7 @@ public class TramaIBeacon {
     }
 
     /**
+     * getiBeaconLength()->Z
      * Metodo para devolver el tamaño del Beacon
      * @return nos devuelve su tamaño
      */
@@ -110,6 +116,7 @@ public class TramaIBeacon {
     }
 
     /**
+     * bytes->TramaIBeacon
      * Constructor para añadir los bytes a la trama del beacon
      * @param bytes que queremos añaair a su trama
      */

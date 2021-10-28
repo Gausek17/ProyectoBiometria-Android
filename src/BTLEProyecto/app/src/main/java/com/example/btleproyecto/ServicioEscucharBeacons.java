@@ -3,6 +3,13 @@ package com.example.btleproyecto;
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
+/**
+ *Main Activity
+ * Fichero donde llamamos a los demás metodos
+ * Alberto Valls Martinez
+ * 27/10/21
+ */
+
 
 /**
  * Metodo que recibe los Beacons
@@ -17,8 +24,9 @@ public class ServicioEscucharBeacons extends IntentService {
 
     private boolean seguir = true;
 
-    // ---------------------------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------------------------
+    /**
+     * Constructor de la clase ServicioEscucharBeacons
+     */
     public ServicioEscucharBeacons(  ) {
         super("HelloIntentService");
 
@@ -28,6 +36,7 @@ public class ServicioEscucharBeacons extends IntentService {
     
 
     /**
+     * parar()
      * metodo que para la escucha de beacons
      */
     public void parar () {
@@ -47,6 +56,7 @@ public class ServicioEscucharBeacons extends IntentService {
     }
 
     /**
+     * onDestroy()
      * lo que queremos hacer cuando está en el estado onDestroy
      */
     public void onDestroy() {

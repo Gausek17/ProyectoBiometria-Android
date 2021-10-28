@@ -12,8 +12,16 @@ import java.net.URL;
 import android.os.AsyncTask;
 import android.util.Log;
 
-// ------------------------------------------------------------------------
-// ------------------------------------------------------------------------
+/**
+ * PeticionarioRest
+ * Fichero para realizar peticiones REST
+ * Alberto Valls Martinez
+ * 27/10/21
+ */
+
+/**
+ * Clase PeticionarioRest
+ */
 public class PeticionarioREST extends AsyncTask<Void, Void, Boolean> {
 
     // --------------------------------------------------------------------
@@ -32,8 +40,14 @@ public class PeticionarioREST extends AsyncTask<Void, Void, Boolean> {
     private int codigoRespuesta;
     private String cuerpoRespuesta = "";
 
-    // --------------------------------------------------------------------
-    // --------------------------------------------------------------------
+    /**
+     * Metodo,urlDestino,cuerpo, laRespuesta -> hacerPeticionREST()
+     * Metodo para hacer peticiones Rest
+     * @param metodo de la peticion
+     * @param urlDestino para llegar al destinatario
+     * @param cuerpo informacion que quermos mandar
+     * @param laRespuesta que nos envia el receptor
+     */
     public void hacerPeticionREST (String metodo, String urlDestino, String cuerpo, RespuestaREST  laRespuesta) {
         this.elMetodo = metodo;
         this.urlDestino = urlDestino;
@@ -43,14 +57,19 @@ public class PeticionarioREST extends AsyncTask<Void, Void, Boolean> {
         this.execute(); // otro thread ejecutará doInBackground()
     }
 
-    // --------------------------------------------------------------------
-    // --------------------------------------------------------------------
+    /**
+     * Constructor PeticionarioRest
+     */
     public PeticionarioREST() {
         Log.d("clienterestandroid", "constructor()");
     }
 
-    // --------------------------------------------------------------------
-    // --------------------------------------------------------------------
+    /**
+     * params->doInBackground()->boolean
+     * Metodo para la conexion y envio de datos
+     * @param params de la informacion enviada
+     * @return si termina bien o mal
+     */
     @Override
     protected Boolean doInBackground(Void... params) {
         Log.d("clienterestandroid", "doInBackground()");
@@ -128,8 +147,11 @@ public class PeticionarioREST extends AsyncTask<Void, Void, Boolean> {
         return false; // doInBackground() NO termina bien
     } // ()
 
-    // --------------------------------------------------------------------
-    // --------------------------------------------------------------------
+    /**
+     * comoFue->onPostExecute()
+     * Metodo para comprobar el envio
+     * @param comoFue veremos si ha ido bien o mal el envio
+     */
     protected void onPostExecute(Boolean comoFue) {
         // llamado tras doInBackground()
         Log.d("clienterestandroid", "onPostExecute() comoFue = " + comoFue);

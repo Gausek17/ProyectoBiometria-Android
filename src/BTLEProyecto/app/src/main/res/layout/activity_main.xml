@@ -23,8 +23,8 @@
 
     <Button
         android:id="@+id/botonBuscarNuestroDispositivoBTLE"
-        android:layout_width="221dp"
-        android:layout_height="wrap_content"
+        android:layout_width="389dp"
+        android:layout_height="91dp"
         android:onClick="botonBuscarNuestroDispositivoBTLEPulsado"
         android:text="Buscar nuestro dispositivo  BTLE" />
 
@@ -52,6 +52,7 @@
 
     <Button
         android:id="@+id/botonEnviar"
+        android:onClick="boton_enviar_pulsado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />

@@ -5,9 +5,12 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
-// -----------------------------------------------------------------------------------
-// @author: Jordi Bataller i Mascarell
-// -----------------------------------------------------------------------------------
+/**
+ * Utilidades
+ * Fichero donde encontramos metodos para convertir los datos en otro tipo.
+ * Alberto Valls Martinez
+ * 27/10/21
+ */
 public class Utilidades {
 
     /**
@@ -76,6 +79,7 @@ public class Utilidades {
     }
 
     /**
+     *
      * Metodo que pone en un array los bytes mas y menos significativos
      * @param masSignificativos primeros 8 bytes
      * @param menosSignificativos ultimos 8 bytes
@@ -89,6 +93,7 @@ public class Utilidades {
     }
 
     /**
+     * bytes->bytesToInt()->Z
      * Metodo que convierte los bytes a enteros
      * @param bytes que queremos convertir
      * @return devolvemos los bytes en bigInteger
@@ -98,6 +103,7 @@ public class Utilidades {
     }
 
     /**
+     * bytes->bytesToLong()->R
      * Metodo que sirve para convertir bytes a numeros de 4 bytes
      * @param bytes parámetro que pasamos que queremos convertir
      * @return nos devuelve la conversión
@@ -107,6 +113,7 @@ public class Utilidades {
     }
 
     /**
+     * bytes->bytesToIntOk()->Z
      *Metodo que convierte bytes a enteros comprobando su tamaño
      * @param bytes parametro que queremos convertir
      * @return nos devuelve el objeto entero

@@ -10,6 +10,7 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,13 +24,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.btleproyecto.CasosDeUso.LogicaFake;
 import com.example.btleproyecto.Datos.PeticionarioREST;
+import com.example.btleproyecto.Modelo.MedicionPOJO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- *
+ *Main Activity
+ * Fichero donde llamamos a los demás metodos
+ * Alberto Valls Martinez
+ * 27/10/21
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -46,11 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
     private ScanCallback callbackDelEscaneo = null;
 
+    ArrayList filters=new ArrayList<>();
 
+    private ScanResult dispositivo;
+
+    private final String nombreDispositivo="GTI-Alberto";
 
     private Intent elIntentDelServicio = null;
 
+    ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY).build();
+
     /**
+     * V->botonArrancarServicioPulsado()
      * Metodo que sirve para que al pulsar el boton arranque el servicio
      * @param v que es la vista
      */
@@ -72,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * v->botonDetnerServicioPulsado()
      * Metodo que sirve para que al pulsar el boton se detenga el servicio
      * @param v vista usada
      */
@@ -96,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 // -------------------------------------------------------------------------------------------------
 
     /**
+     * buscarTodosLosDispositivosBTLE()
      * Metodo que busca todos los dispositivos bluetooth
      */
     private void buscarTodosLosDispositivosBTLE() {
@@ -134,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * resultado->mostrarInformacionDispositivoBTLE
      * Metodo que nos muestra la informacion del dispositivo bluetooth
      * @param resultado que nos proporciona la información de dicho dispositivo
      */
@@ -184,15 +201,20 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * dispositivoBuscado->buscarEsteDispositivoBTLE()
      * Metodo que sirve para buscar el dispositivo que tenemos
      * @param dispositivoBuscado que es el dispositivo que queremos buscar
      */
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
+
+
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): instalamos scan callback ");
 
+        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
 
+        filters.add(sf);
         // super.onScanResult(ScanSettings.SCAN_MODE_LOW_LATENCY, result); para ahorro de energía
 
         this.callbackDelEscaneo = new ScanCallback() {
@@ -202,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): onScanResult() ");
 
                 mostrarInformacionDispositivoBTLE( resultado );
+                mandarInformacion(resultado);
             }
             //resultados de la bUsqueda
             @Override
@@ -219,16 +242,17 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        ScanFilter sf = new ScanFilter.Builder().setDeviceName( dispositivoBuscado ).build();
+
 
         Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado );
         //Log.d(ETIQUETA_LOG, "  buscarEsteDispositivoBTLE(): empezamos a escanear buscando: " + dispositivoBuscado
         //      + " -> " + Utilidades.stringToUUID( dispositivoBuscado ) );
 
-        this.elEscanner.startScan( this.callbackDelEscaneo );
+        this.elEscanner.startScan(filters, settings, this.callbackDelEscaneo );
     } // ()
 
     /**
+     * detenerBusquedaDispositivosBTLE()
      * Metodo para detener la busqueda de dispositivos bluetooth
      */
     private void detenerBusquedaDispositivosBTLE() {
@@ -243,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * V->botonBuscarDispositivosBTLEPulsado()
      * Metodo que sirve para buscar todos los dispositivos bluetooth
      * @param v parametro de la vista
      */
@@ -252,19 +277,19 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * V->botonBuscarNuestroDispositivoBTLEPulsado()
      * Metodo que sirve para buscar nuestro dispositivo bluetooth
      * @param v parametro de la vista
      */
     public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
-        //this.buscarEsteDispositivoBTLE( Utilidades.stringToUUID( "EPSG-GTI-PROY-3A" ) );
 
-        //this.buscarEsteDispositivoBTLE( "EPSG-GTI-PROY-3A" );
-        this.buscarEsteDispositivoBTLE( "fistro" );
+        this.buscarEsteDispositivoBTLE( nombreDispositivo );
 
     } // ()
 
     /**
+     * v->botonDetnerBusquedaDispositivosBTLEPulsado()
      * Metodo que sirve para detener la busqueda de dispositivos bluetooth
      * @param v parametro de la vista
      */
@@ -274,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     /**
+     * inicalizarBluetooth()
      * Metodo que sirve para inicializar  el bluetooth
      */
     private void inicializarBlueTooth() {
@@ -325,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
+     * requestCode, permissions, grantResults->onRequestPermissionsResult()
      * Metodo para añadir permisos a la aplicación
      * @param requestCode codigo de peticion
      * @param permissions permisos que vamos a añadir
@@ -366,45 +393,45 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("clienterestandroid", "fin onCreate()");
     }
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
+
+    /**
+     * view->boton_enviar_pulsado()
+     * @param quien cliente
+     */
     public void boton_enviar_pulsado (View quien) {
         Log.d("clienterestandroid", "boton_enviar_pulsado");
         this.elTexto.setText("pulsado");
 
-        // ojo: creo que hay que crear uno nuevo cada vez
-        PeticionarioREST elPeticionario = new PeticionarioREST();
+        MedicionPOJO m=new MedicionPOJO(32, 23,14);
 
-		/*
-
-		   enviarPeticion( "hola", function (res) {
-		   		res
-		   })
-
-        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
-			(int codigo, String cuerpo) => { } );
-
-		   */
-
-        elPeticionario.hacerPeticionREST("GET",  "http://158.42.144.126:8080/prueba", null,
-                new PeticionarioREST.RespuestaREST () {
-                    @Override
-                    public void callback(int codigo, String cuerpo) {
-                        elTexto.setText ("codigo respuesta= " + codigo + " <-> \n" + cuerpo);
-                    }
-                }
-        );
-
+        LogicaFake.guardarMedicion(m);
 
     } // pulsado ()
 
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
+    /**
+     * menu->onCreateOptionsMenu()->booleano
+     * @param menu
+     * @return devolvemos verdadero
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+
+    private void mandarInformacion(ScanResult resultado){
+
+        byte[] bytes = resultado.getScanRecord().getBytes();
+
+        TramaIBeacon tib = new TramaIBeacon(bytes);
+
+        int valorMedicion=Utilidades.bytesToInt(tib.getMinor());
+
+        MedicionPOJO medicion = new MedicionPOJO(valorMedicion, 231, 324);
+
+        LogicaFake.guardarMedicion(medicion);
     }
 
 
